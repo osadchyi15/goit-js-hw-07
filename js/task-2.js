@@ -1,5 +1,15 @@
 'use strict';
 
+// Знаходимо цільовий елемент з класом gallery
+const gallery = document.querySelector('.gallery');
+
+// Задаємо флекс атрибути
+gallery.style.display = "flex";
+gallery.style.flexWrap = "wrap";
+gallery.style.gap = "20px";
+gallery.style.justifyContent = "center";
+gallery.style.listStyleType = "none";
+
 const images = [
   {
     url: "https://images.pexels.com/photos/140134/pexels-photo-140134.jpeg?dpr=2&h=750&w=1260",
@@ -27,27 +37,28 @@ const images = [
   }
 ];
 
-
-const gallery = document.querySelector('.gallery');
-
-gallery.style.display = "flex";
-gallery.style.flexWrap = "wrap";
-gallery.style.gap = "20px";
-gallery.style.listStyleType = "none";
-
-for (const image of images) {
-  
-  const li = document.createElement('li');
-  const img = document.createElement('img');
-
-  img.src = image.url;
-  img.alt = image.alt;
-  img.style.height = "240px";
-  img.style.border = "5px solid #aaa";
-  img.style.borderRadius = "8px";
-
-  li.appendChild(img);
-  gallery.appendChild(li);
+//Ф-я для створення одиничного img всередині li у вигляді тексту
+function imageTemplate(imgObj) {
+  return `<li>\n<img src=${imgObj.url} alt=${imgObj.alt} class="added-image"/>\n</li>`;
 }
+
+// Робимо масив з розміткою у вигляді тексту
+function imagesTemplate(arr) {
+  return arr.map(imageTemplate).join('\n');
+}
+
+//Додаємо текст розмітки до DOM за одну дію
+const markup = imagesTemplate(images);
+gallery.innerHTML = markup;
+
+//Додаєм стилі до зображень по заданому класу
+const addedImages = document.querySelectorAll('.added-image');
+for (const image of addedImages) {
+  image.style.width = "320px";
+  image.style.height = "240px";
+  image.style.objectFit = "cover";
+  image.style.border = "5px solid #aaa";
+  image.style.borderRadius = "8px";
+};
 
 
